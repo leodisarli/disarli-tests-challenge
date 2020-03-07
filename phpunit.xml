@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit backupGlobals="false"
+         backupStaticAttributes="false"
+         bootstrap="bootstrap/app.php"
+         colors="true"
+         convertErrorsToExceptions="true"
+         convertNoticesToExceptions="true"
+         convertWarningsToExceptions="true"
+         processIsolation="false"
+         stopOnFailure="false">
+    <testsuites>
+        <testsuite name="Unit">
+            <directory suffix="Test.php">./tests/unit</directory>
+        </testsuite>
+    </testsuites>
+    <filter>
+        <whitelist processUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">./app</directory>
+            <exclude>
+              <directory suffix="Repositories.php">./app/Repositories</directory>
+              <directory suffix=".php">./app/Providers</directory>
+              <directory suffix=".php">./app/Middleware</directory>
+              <directory suffix=".php">./app/Console</directory>
+              <directory suffix=".php">./app/Exceptions</directory>
+              <directory suffix=".php">./app/Http</directory>
+              <directory suffix=".php">./app/Models</directory>
+            </exclude>
+        </whitelist>
+    </filter>
+    <php>
+        <env name="APP_ENV" value="testing"/>
+        <env name="CACHE_DRIVER" value="array"/>
+        <env name="QUEUE_CONNECTION" value="sync"/>
+    </php>
+    <logging>
+      <log type="coverage-html" target="./coverage/" lowUpperBound="35" highLowerBound="70"/>
+      <log type="coverage-text" target="php://stdout" lowUpperBound="35" highLowerBound="70"/>
+      <log type="testdox-text" target="php://stdout" showUncoveredFiles="false"/>
+    </logging>
+</phpunit>

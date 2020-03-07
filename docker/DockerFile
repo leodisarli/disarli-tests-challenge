@@ -1,0 +1,21 @@
+FROM php:7.1-fpm
+
+RUN set -x \
+    && apt-get update \
+    && apt-get install -y libpq-dev \
+    && apt-get install -y git \
+    && apt-get install -y zip unzip \
+    && docker-php-ext-install pdo pdo_pgsql pdo_mysql \
+    && docker-php-ext-install -j$(nproc) bcmath mbstring \
+    && pecl install xdebug-2.6.0 \
+    && docker-php-ext-enable xdebug \
+    && rm -rf /var/lib/apt/lists/* /var/lib/log/* /tmp/* /var/tmp/* 
+
+RUN curl -sS https://getcomposer.org/installer | \
+    php -- --install-dir=/usr/bin/ --filename=composer
+
+COPY ./docker/freetds.conf /etc/freetds/freetds.conf
+
+RUN sed -ri 's/^www-data:x:82:82:/www-data:x:1000:1001:/' /etc/passwd
+
+RUN php -m
